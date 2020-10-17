@@ -10,4 +10,4 @@ simplejson==3.8.0
 plotly==4.11.0
 geopy==2.0.0
 numpy==1.16.4
-geojson=2.5.0
+geojson==2.5.0
