@@ -1,4 +1,4 @@
-pandas==0.20.1
+pandas==0.22.0
 dill==0.2.1
 flask==0.10.1
 gunicorn==19.5.0
@@ -8,3 +8,7 @@ oauthlib==0.7.2
 requests>=2.12.4
 simplejson==3.8.0
 bokeh==0.12.6
+plotly==4.11.0
+geopy==2.0.0
+numpy==1.16.4
+json=2.0.9
