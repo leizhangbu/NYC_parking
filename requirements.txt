@@ -1,5 +1,5 @@
 pandas==0.22.0
-dill==0.2.1
+dill==0.3.2
 flask==0.10.1
 gunicorn==19.5.0
 jinja2==2.7.2
