@@ -23,5 +23,17 @@
                 </form>
             </div>
         </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart" id="bargraph">
+                        <script>
+                            var graphs = {{plot | safe}};
+                            
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

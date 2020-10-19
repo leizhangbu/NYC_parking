@@ -80,12 +80,12 @@ def create_plot(location_name):
     div = fig.to_html(full_html=False)
 
     return render_template_string('''
-<head>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>    
-</head>
-<body>
-{{ div_placeholder|safe }}
-</body>''', div_placeholder=div)
+                                <head>
+                                <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>    
+                                </head>
+                                <body>
+                                {{ div_placeholder|safe }}
+                                </body>''', div_placeholder=div)
 
 
 
@@ -97,7 +97,28 @@ def main():
 @app.route('/index',methods=['GET','POST'])
 def index():
     if request.method == 'GET':
-        return render_template('index.html')
+        df= pd.read_csv('data/precinct_violation.csv')
+        policemap = json.load(open("data/police_precincts.geojson"))
+        fig = px.choropleth_mapbox(df,
+                                geojson=policemap,
+                                locations="Precinct",
+                                featureidkey="properties.Precinct",
+                                color="Number of Violation",
+                                color_continuous_scale="viridis",
+                                mapbox_style="carto-positron",
+                                zoom=9, center={"lat": 40.7, "lon": -73.9},
+                                opacity=0.7,
+                                hover_name="Info"
+                                )
+        div = fig.to_html(full_html=False)
+        bar = render_template_string('''
+                            <head>
+                            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>    
+                            </head>
+                            <body>
+                            {{ div_placeholder|safe }}
+                            </body>''', div_placeholder=div)
+        return render_template('index.html',plot=bar)
     else:
         #request was a post
         location_name = request.form['location']
