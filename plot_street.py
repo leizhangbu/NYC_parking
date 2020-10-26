@@ -94,13 +94,44 @@ def plot_overview():
                             locations="Precinct",
                             featureidkey="properties.Precinct",
                             color="Number of Violation",
-                            color_continuous_scale="viridis",
+                            color_continuous_scale='Hot',
+                            range_color=(0, 5000),
                             mapbox_style="carto-positron",
                             zoom=9, center={"lat": 40.7, "lon": -73.9},
                             opacity=0.7,
                             hover_name="Info",
                             width=800, height=600
                             )
+    fig.update_layout(coloraxis_showscale=False)
+    div = fig.to_html(full_html=False)
+    bar = render_template_string('''
+                        <head>
+                        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>    
+                        </head>
+                        <body>
+                        {{ div_placeholder|safe }}
+                        </body>''', div_placeholder=div)
+    return bar
+
+def plot_weekday(DoW):
+    map_wd={'Mon':0,'Tue':1,'Wed':2,'Thu':3,'Fri':4,'Sat':5,'Sun':6}
+    df= pd.read_csv('data/precinct_wd_violation.csv')
+    df = df[df.weekday==map_wd[DoW]][['Precinct','Number of Violation','Info']]
+    policemap = json.load(open("data/police_precincts.geojson"))
+    fig = px.choropleth_mapbox(df,
+                            geojson=policemap,
+                            locations="Precinct",
+                            featureidkey="properties.Precinct",
+                            color="Number of Violation",
+                            color_continuous_scale='Hot',
+                            mapbox_style="carto-positron",
+                            range_color=(0, 5000),
+                            zoom=9, center={"lat": 40.7, "lon": -73.9},
+                            opacity=0.7,
+                            hover_name="Info",
+                            width=800, height=600
+                            )
+    fig.update_layout(coloraxis_showscale=False)
     div = fig.to_html(full_html=False)
     bar = render_template_string('''
                         <head>

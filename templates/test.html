@@ -19,14 +19,14 @@
       <option value="Sat">Sat</option>
       <option value="Sun">Sun</option>
     </select>
-    <input type="submit" value="Submit">
+    <input type="submit" class="btn btn-primary" value="Submit">
     </form>
-    <p>When you select a new car, a function is triggered which outputs the value of the selected car.</p>
     <div id="result">
     {% if week_day is defined %}
-        You have selected: {{ week_day }}
+        {{ week_day }}
     {% endif %}
     </div>
+    <p align="left"><a href=index ><button class=grey style="height:40px;width:100px">Return Home</button></a></p>
   <div class="col-md-4 col-lg-offset-4">
         <p align = "center">               
             <div class="chart" id="bargraph">
@@ -37,6 +37,5 @@
         </p> 
         </div>
 </body>
-<p align="left"><a href=index ><button class=grey style="height:40px;width:100px">Return Home</button></a></p>
 
 </html>

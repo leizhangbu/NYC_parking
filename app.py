@@ -7,7 +7,7 @@ import numpy as np
 import json
 import plotly.express as px
 import dill
-from plot_street import plot_overview, create_plot
+from plot_street import plot_overview, create_plot,plot_weekday
 
 app = Flask(__name__)
 
@@ -29,12 +29,12 @@ def index():
 
 @app.route('/Explore_more', methods=['GET', 'POST'])
 def dropdown():
-    bar = plot_overview()
     if request.method == "POST":
         DoW = request.form.get("DoW", None)
-        if DoW!=None:
-            print(DoW)
+        if DoW!=None and DoW!='All':
+            bar = plot_weekday(DoW)
             return render_template("test.html", week_day = DoW,plot=bar)
+    bar = plot_overview()
     return render_template("test.html",plot=bar)
 
 
