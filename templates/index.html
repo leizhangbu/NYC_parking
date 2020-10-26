@@ -10,30 +10,32 @@
     </head>
     <body>
         <div class=page>
-            <h1>Parking Risk Map</h1>
+            <h3 style="text-align: center;">
+                <span style="color: #134285;">Parking Safer in New York!</span>
+            </h3>
             <div class=metanav>
-                <h4>A very alpha version</h4>
-                <form id='input' method='post' action='index'>
-                <p>
-                    Location: <input type='text' name='location' />
-                </p> 
-                <p>
-                    <input type="submit" value="Submit"> 
+                <h4></h4>
+                <p align = "center">   
+                <div class="fieldWrap clearfix">
+                    <form id='input' method='post' action='index'>
+                        Location: <input type='text' name='location' 
+                        placeholder="Type an address" />
+                        <button type="submit" class="btn btn-primary" value="Submit">Find Parking</button>
+                    </form>
+                </div>
                 </p>
-                </form>
             </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
+            <p align="left"><a href=Explore_more ><button class=grey style="height:40px;width:100px">Explore more</button></a></p>
+            <div class="col-md-4 col-lg-offset-4">
+                <p align = "center">               
                     <div class="chart" id="bargraph">
                         <script>
                             var graphs = {{plot | safe}};
-                            
                         </script>
                     </div>
+                </p> 
                 </div>
-            </div>
         </div>
     </body>
+
 </html>
