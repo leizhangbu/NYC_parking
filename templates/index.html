@@ -20,6 +20,13 @@
                     <form id='input' method='post' action='index'>
                         Location: <input type='text' name='location' 
                         placeholder="Type an address" />
+                        <select class="field select-field" name="daytime" id="daytime">
+                        <option value="daytime" selected="">Time</option>
+                        <option value="Morning">Morning: before 11am</option>
+                        <option value="Noon">Noon: 11am-2pm</option>
+                        <option value="Afternoon">Afternoon: 2pm-6pm</option>
+                        <option value="Evening">Evening: after 6pm</option>
+                        </select>
                         <button type="submit" class="btn btn-primary" value="Submit">Find Parking</button>
                     </form>
                 </div>

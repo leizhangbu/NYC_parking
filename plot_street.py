@@ -24,7 +24,7 @@ def nearby_locations(Street_str,df_street,size =0.015):
                            &(df_street.location_y<(location.longitude+size))&(df_street.location_y>(location.longitude-size))]
         return df_street, location
 
-def get_fig(location, streets_code):
+def get_fig(location, streets_code,dict_average):
     fig = go.Figure(data=[go.Scattermapbox(lat=[location.latitude], lon=[location.longitude])])
     #fig.add_annotation(text='Your Destination')
     layer_list=[]
@@ -67,13 +67,24 @@ def get_fig(location, streets_code):
     )
     return fig
 
-def create_plot(location_name):
+def create_plot(location_name,daytime):
+    if daytime=='daytime':
+        dict_average = dill.load(open('data/dict_average.pkd','rb'))
+    elif daytime=='Morning':
+        dict_average = dill.load(open('data/dict_morning_average.pkd','rb'))
+    elif daytime=='Noon':
+        dict_average = dill.load(open('data/dict_noon_average.pkd','rb'))
+    elif daytime=='Afternoon':
+        dict_average = dill.load(open('data/dict_aft_average.pkd','rb'))
+    elif daytime=='Evening':
+        dict_average = dill.load(open('data/dict_eve_average.pkd','rb'))
+
     Street_str = location_name#'Krupa Grocery'
     #print(location_name)
     street_nearby,location = nearby_locations(Street_str,df_street)
     streets_code = street_nearby.street.values
     streets_code = streets_code.astype(int)
-    fig = get_fig(location, streets_code)
+    fig = get_fig(location, streets_code,dict_average)
 
     div = fig.to_html(full_html=False)
 

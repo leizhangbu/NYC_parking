@@ -22,7 +22,8 @@ def index():
         return render_template('index.html',plot=bar)
     else:
         location_name = request.form['location']
-        bar = create_plot(location_name)
+        daytime = request.form['daytime']
+        bar = create_plot(location_name,daytime)
         return render_template('index.html', plot=bar)
         #tz_list = ['All','Mon','Tue','Wed','Thu','Fri','Sat','Sun']
         #return render_template('explore.html',tz_list=tz_list)
