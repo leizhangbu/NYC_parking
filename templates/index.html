@@ -9,40 +9,43 @@
         <!--<link rel=stylesheet type=text/css href='/static/style.css'>-->
     </head>
     <body>
-        <div class=page>
+        <div class="wpb_wrapper">
             <h3 style="text-align: center;">
                 <span style="color: #134285;">Parking Safer in New York!</span>
             </h3>
-            <div class=metanav>
-                <h4></h4>
-                <p align = "center">   
-                <div class="fieldWrap clearfix">
-                    <form id='input' method='post' action='index'>
-                        Location: <input type='text' name='location' 
-                        placeholder="Type an address" />
-                        <select class="field select-field" name="daytime" id="daytime">
-                        <option value="daytime" selected="">Time</option>
-                        <option value="Morning">Morning: before 11am</option>
-                        <option value="Noon">Noon: 11am-2pm</option>
-                        <option value="Afternoon">Afternoon: 2pm-6pm</option>
-                        <option value="Evening">Evening: after 6pm</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary" value="Submit">Find Parking</button>
-                    </form>
-                </div>
-                </p>
+        </div>
+        <div class=app-container>
+            <div class="fieldWrap clearfix">
+                <form id='input' method='post' action='index'>
+                    <input class = 'field input-field' type='text' name='location' placeholder="Type an address" />
+                    <select class="field select-field" name="daytime" id="daytime">
+                    <option value="daytime" selected="">Select Parking Time</option>
+                    <option value="Morning">Morning: before 11am</option>
+                    <option value="Noon">Noon: 11am-2pm</option>
+                    <option value="Afternoon">Afternoon: 2pm-6pm</option>
+                    <option value="Evening">Evening: after 6pm</option>
+                    </select>
+                    <select class="field select-field" name="day" id="day">
+                    <option value="daytime" selected="">Select Day</option>
+                    <option value="Morning">d2</option>
+                    <option value="Noon">d3</option>
+                    <option value="Afternoon">d3</option>
+                    <option value="Evening">d4</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary" value="Submit">Find Parking</button>
+                </form>
             </div>
-            <p align="left"><a href=Explore_more ><button class=grey style="height:40px;width:100px">Explore more</button></a></p>
-            <div class="col-md-4 col-lg-offset-4">
-                <p align = "center">               
+
+            <div class="graph">
+                <p align = "right">               
                     <div class="chart" id="bargraph">
                         <script>
-                            var graphs = {{plot | safe}};
+                            var graphs = {{plot | safe}}
                         </script>
                     </div>
-                </p> 
                 </div>
         </div>
+        
     </body>
 
 </html>

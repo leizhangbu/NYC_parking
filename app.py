@@ -23,6 +23,7 @@ def index():
     else:
         location_name = request.form['location']
         daytime = request.form['daytime']
+        print(daytime)
         bar = create_plot(location_name,daytime)
         return render_template('index.html', plot=bar)
         #tz_list = ['All','Mon','Tue','Wed','Thu','Fri','Sat','Sun']

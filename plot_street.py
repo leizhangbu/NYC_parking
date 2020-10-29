@@ -14,7 +14,7 @@ street_code_dic = dill.load(open('data/streetcode_dic_full.pkd', 'rb'))
 geolocator = Nominatim(user_agent="lz-application")
 
 
-def nearby_locations(Street_str,df_street,size =0.015):
+def nearby_locations(Street_str,df_street,size =0.03):
     location = geolocator.geocode(Street_str+' NYC')
     if not location:
         return []
@@ -24,7 +24,7 @@ def nearby_locations(Street_str,df_street,size =0.015):
                            &(df_street.location_y<(location.longitude+size))&(df_street.location_y>(location.longitude-size))]
         return df_street, location
 
-def get_fig(location, streets_code,dict_average):
+def get_fig(location, streets_code,dict_average,size =0.01):
     fig = go.Figure(data=[go.Scattermapbox(lat=[location.latitude], lon=[location.longitude])])
     #fig.add_annotation(text='Your Destination')
     layer_list=[]
@@ -42,14 +42,16 @@ def get_fig(location, streets_code,dict_average):
         else:
             color = 'green'
         for geo in street_code_dic[str(street_code)]:
-            layer_list.append({
-                        'sourcetype': 'geojson',
-                        'source': geo,#['geojson'],
-                        'type': 'line',
-                        'color':color,
-                        'opacity':0.6,
-                        'line':dict(width=6,)
-                    })
+            if (geo['coordinates'][0][0]<location.longitude+size) and (geo['coordinates'][0][0]>location.longitude-size)\
+            and (geo['coordinates'][0][1]<location.latitude+size) and (geo['coordinates'][0][1]>location.latitude-size):
+                layer_list.append({
+                            'sourcetype': 'geojson',
+                            'source': geo,#['geojson'],
+                            'type': 'line',
+                            'color':color,
+                            'opacity':0.6,
+                            'line':dict(width=6,)
+                        })
     mapbox_access_token='pk.eyJ1IjoiZ2ZlbGl4IiwiYSI6ImNrZTNsbnYzMTBraG0zMnFuZXNjOWZhdDgifQ.5sMKH7NQ6_oVyU4oJlcBUw'
     fig.update_layout(
         autosize=False,
@@ -80,7 +82,6 @@ def create_plot(location_name,daytime):
         dict_average = dill.load(open('data/dict_eve_average.pkd','rb'))
 
     Street_str = location_name#'Krupa Grocery'
-    #print(location_name)
     street_nearby,location = nearby_locations(Street_str,df_street)
     streets_code = street_nearby.street.values
     streets_code = streets_code.astype(int)
