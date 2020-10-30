@@ -8,6 +8,8 @@ import json
 import plotly.express as px
 import dill
 from plot_street import plot_overview, create_plot,plot_weekday
+from datetime import date,timedelta
+
 
 app = Flask(__name__)
 
@@ -17,27 +19,26 @@ def main():
 
 @app.route('/index',methods=['GET','POST'])
 def index():
+    today=date.today()
+    date_list =[today+timedelta(days=i) for i in range(7)]
+    date_list = [str(today.month)+'-'+str(today.day) for today in date_list]
     if request.method == 'GET':
-        bar = plot_overview()
-        return render_template('index.html',plot=bar)
+        location_name = 'Krupa Grocery'
+        daytime = 'daytime'
+        weekday=-1
+        bar = create_plot(location_name,daytime,weekday)
     else:
         location_name = request.form['location']
         daytime = request.form['daytime']
-        print(daytime)
-        bar = create_plot(location_name,daytime)
-        return render_template('index.html', plot=bar)
-        #tz_list = ['All','Mon','Tue','Wed','Thu','Fri','Sat','Sun']
-        #return render_template('explore.html',tz_list=tz_list)
+        weekday = request.form['weekday']
+        #print(request.form['parking_type'])
+        bar = create_plot(location_name,daytime,weekday)
 
-@app.route('/Explore_more', methods=['GET', 'POST'])
-def dropdown():
-    if request.method == "POST":
-        DoW = request.form.get("DoW", None)
-        if DoW!=None and DoW!='All':
-            bar = plot_weekday(DoW)
-            return render_template("test.html", week_day = DoW,plot=bar)
-    bar = plot_overview()
-    return render_template("test.html",plot=bar)
+    return render_template('index.html',\
+     plot=bar,location=location_name,\
+     daytime=daytime,weekday=weekday,
+     date_list = date_list)
+
 
 
 if __name__ == '__main__':

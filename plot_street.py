@@ -24,8 +24,13 @@ def nearby_locations(Street_str,df_street,size =0.03):
                            &(df_street.location_y<(location.longitude+size))&(df_street.location_y>(location.longitude-size))]
         return df_street, location
 
-def get_fig(location, streets_code,dict_average,size =0.01):
-    fig = go.Figure(data=[go.Scattermapbox(lat=[location.latitude], lon=[location.longitude])])
+def get_fig(Street_str,location, streets_code,dict_average,size =0.01):
+    fig = go.Figure(data=[go.Scattermapbox(lat=[location.latitude], \
+    lon=[location.longitude],
+        marker=go.scattermapbox.Marker(
+        size=9),
+    text=[Street_str],
+    hoverinfo='text')])
     #fig.add_annotation(text='Your Destination')
     layer_list=[]
     for street_code in streets_code:
@@ -50,12 +55,14 @@ def get_fig(location, streets_code,dict_average,size =0.01):
                             'type': 'line',
                             'color':color,
                             'opacity':0.6,
-                            'line':dict(width=6,)
+                            'line':dict(width=6,),
+                            
                         })
     mapbox_access_token='pk.eyJ1IjoiZ2ZlbGl4IiwiYSI6ImNrZTNsbnYzMTBraG0zMnFuZXNjOWZhdDgifQ.5sMKH7NQ6_oVyU4oJlcBUw'
     fig.update_layout(
         autosize=False,
-        width=800,
+        hovermode='closest',
+        width=1000,
         height=400,
         margin={"r":0,"t":0,"l":0,"b":0},
         mapbox=go.layout.Mapbox(
@@ -64,12 +71,14 @@ def get_fig(location, streets_code,dict_average,size =0.01):
             zoom=15, 
             center_lat =location.latitude,
             center_lon = location.longitude,
-            layers=layer_list
-        )
+            layers=layer_list,
+        ),
     )
+
     return fig
 
-def create_plot(location_name,daytime):
+def create_plot(location_name,daytime,weekday):
+    '''
     if daytime=='daytime':
         dict_average = dill.load(open('data/dict_average.pkd','rb'))
     elif daytime=='Morning':
@@ -80,12 +89,32 @@ def create_plot(location_name,daytime):
         dict_average = dill.load(open('data/dict_aft_average.pkd','rb'))
     elif daytime=='Evening':
         dict_average = dill.load(open('data/dict_eve_average.pkd','rb'))
+    '''
+    df_weekday=pd.read_csv('data/df_week_violation.csv')
+    if int(weekday)>=0:
+        df_tmp = df_weekday[df_weekday.weekday==int(weekday)]
+    else:
+        df_tmp = df_weekday
+    if daytime == 'Morning':
+        df_tmp=df_tmp[(df_tmp.AP=='A')&(df_tmp.Hour<11)]
+    if daytime == 'Noon':
+        df_tmp=df_tmp[((df_tmp.AP=='P')&(df_tmp.Hour<=2))|((df_tmp.AP=='A')&(df_tmp.Hour>=11))]
+    if daytime == 'Afternoon':
+        df_tmp=df_tmp[(df_tmp.AP=='P')&(df_tmp.Hour<=6)&(df_tmp.Hour>2)]
+    if daytime == 'Evening':
+        df_tmp=df_tmp[(df_tmp.AP=='P')&(df_tmp.Hour>6)]
+        
+    columns_average = ['Full Code', 'N_violation']
+    df_average = df_tmp[columns_average].groupby(['Full Code'],as_index=False).sum()
+    df_average = df_average.groupby(['Full Code'],as_index=True).sum()
+    df_average.sort_values(by=['N_violation'],ascending=False).head()
+    dict_average = df_average.to_dict()['N_violation']
 
     Street_str = location_name#'Krupa Grocery'
     street_nearby,location = nearby_locations(Street_str,df_street)
     streets_code = street_nearby.street.values
     streets_code = streets_code.astype(int)
-    fig = get_fig(location, streets_code,dict_average)
+    fig = get_fig(Street_str,location, streets_code,dict_average)
 
     div = fig.to_html(full_html=False)
 
