@@ -20,19 +20,19 @@ def main():
 @app.route('/index',methods=['GET','POST'])
 def index():
     today=date.today()
-    date_list =[today+timedelta(days=i) for i in range(7)]
-    date_list = [str(today.month)+'-'+str(today.day) for today in date_list]
+    date_option =[today+timedelta(days=i) for i in range(7)]
+    date_list = [str(today.month)+'-'+str(today.day) for today in date_option]
     if request.method == 'GET':
         location_name = 'Krupa Grocery'
         daytime = 'daytime'
         weekday=-1
-        bar = create_plot(location_name,daytime,weekday)
+        bar = create_plot(location_name,daytime,weekday,date_option)
     else:
         location_name = request.form['location']
         daytime = request.form['daytime']
         weekday = request.form['weekday']
         #print(request.form['parking_type'])
-        bar = create_plot(location_name,daytime,weekday)
+        bar = create_plot(location_name,daytime,weekday,date_option)
 
     return render_template('index.html',\
      plot=bar,location=location_name,\

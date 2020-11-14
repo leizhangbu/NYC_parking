@@ -2,9 +2,12 @@
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/bbelderbos/timezone-list?branch=master)](https://bettercodehub.com/)
 
-### What is it?
+### Business Objective
 
-Reduce your parking tickets risk in NYC.
+The project is to help drivers find better street parking locations with less risk of parking tickets. The product is a web app https://nyc-parking-map.herokuapp.com/. User can type in a location in NYC, select a time and date this user want to park, then the app will return a local map where streets' parking risk plotted in color. 
+
+
+### Data Source
 
 ### Install
 
